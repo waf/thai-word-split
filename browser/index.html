@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Thai Word Split</title>
+        <style>
+            body, textarea {
+                font-size:14pt;
+                font-family:sans-serif;
+                width:700px;
+                height:100px;
+                margin:0 auto;
+            }
+            h1 {
+                font-size:16pt;
+                text-align:center;
+                margin:20px auto;
+            }
+            textarea {
+                display:block;
+                width:100%;
+                padding:1em;
+            }
+            button {
+                display:block;
+                padding:1em;
+                margin:20px auto;
+            }
+            #output {
+                font-size:16pt;
+                white-space:pre-wrap;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Thai Word Splitter</h1>
+        <p>Uses browser selection APIs to split Thai sentences into words</p>
+        <textarea placeholder="Enter text here" id="input" lang="th"></textarea>
+        <button id="split">↓ Split words ↓</button>
+        <p id="output"></p>
+
+        <script>
+            var input = document.getElementById("input");
+            var splitButton = document.getElementById("split");
+            var output = document.getElementById("output");
+            var sel = window.getSelection();
+
+            splitButton.addEventListener("click", function() {
+                output.innerText = "";
+                // reset selection
+                input.focus();
+                input.selectionStart = input.selectionEnd = 0;
+
+                // instruct the browser to select each word, then read the
+                // selection and output it.
+                var start = 0;
+                while(end !== input.value.length) {
+                    sel.modify("move", "forward", "word");
+                    var end = input.selectionEnd;
+                    var word = input.value.substring(start, end);
+                    output.textContent += word + "  ";
+                    start = end;
+                }
+            }, false);
+        </script>
+    </body>
+</html>
